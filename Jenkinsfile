@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -16,9 +11,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    python --version
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+                    python3 --version
+                    pip3 install --upgrade pip
+                    pip3 install -r requirements.txt
                 '''
             }
         }
@@ -26,6 +21,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
+                    mkdir -p test-reports
                     pytest --junitxml=test-reports/results.xml
                 '''
             }
